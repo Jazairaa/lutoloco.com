@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipes</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #EEEDEB 0%, #F5F4F2 100%);
+            color: #3C3633;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Enhanced Top Navigation */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(45deg, #3C3633, #4A4441);
+            width: 100%;
+            padding: 15px 25px;
+            color: #EEEDEB;
+            border-bottom: 2px solid #747264;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .top-nav h2 {
+            font-size: 1.8em;
+            font-weight: 700;
+            background: linear-gradient(45deg, #E0CCBE, #EEEDEB);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            color: #EEEDEB;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 8px 15px;
+            border-radius: 25px;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background: rgba(224, 204, 190, 0.2);
+            transform: translateX(-5px);
+        }
+
+        /* Enhanced Categories Section */
+        .categories {
+            display: flex;
+            align-items: center;
+            margin: 30px 0;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+            padding: 0 20px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            padding: 30px;
+            background: rgba(224, 204, 190, 0.9);
+            border-radius: 20px;
+            width: 90%;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Enhanced Recipe Cards */
+        .card {
+            background: rgba(238, 237, 235, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+            height: 300px;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(224, 204, 190, 0.2), rgba(238, 237, 235, 0.2));
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card a {
+            text-decoration: none;
+            color: inherit;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card img {
+            width: 200px;
+            height: 200px;
+            border-radius: 15px;
+            object-fit: cover;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+            border: 3px solid #747264;
+        }
+
+        .card:hover img {
+            transform: scale(1.05);
+        }
+
+        .card p {
+            font-weight: 700;
+            margin-top: 20px;
+            font-size: 1.3em;
+            color: #3C3633;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card span {
+            color: #747264;
+            font-size: 0.95em;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        /* Enhanced Bottom Navigation */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            background: linear-gradient(45deg, #3C3633, #4A4441);
+            padding: 15px 0;
+            position: fixed;
+            bottom: 0;
+            border-top: 2px solid #747264;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2em;
+            color: #EEEDEB;
+            padding: 8px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: rgba(224, 204, 190, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            font-weight: bold;
+            color: #E0CCBE;
+            background: rgba(224, 204, 190, 0.1);
+        }
+
+        /* Animation for cards */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.4s; }
+        .card:nth-child(4) { animation-delay: 0.6s; }
+        .card:nth-child(5) { animation-delay: 0.8s; }
+        .card:nth-child(6) { animation-delay: 1s; }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <a href="{{ url_for('main_dashboard') }}" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+        <h2>Recipes</h2>
+    </div>
+
+    <div class="categories">
+        <div class="cards">
+            <div class="card">
+                <a href="chicken">
+                    <img src="{{ url_for('static', filename='images/chicken.jpg') }}" alt="Chicken">
+                    <p>Chicken</p>
+                    <span>30 recipes</span>
+                </a>
+            </div>
+            <div class="card">
+                <a href="beef">
+                    <img src="{{ url_for('static', filename='images/beef.jpg') }}" alt="Beef">
+                    <p>Beef</p>
+                    <span>25 recipes</span>
+                </a>
+            </div>
+            <div class="card">
+                <a href="pork">
+                    <img src="{{ url_for('static', filename='images/pork.jpg') }}"  alt="Pork">
+                    <p>Pork</p>
+                    <span>42 recipes</span>
+                </a>
+            </div>
+            <div class="card">
+                <a href="egg">
+                    <img src="{{ url_for('static', filename='images/egg.jpg') }}"  alt="Egg">
+                    <p>Egg</p>
+                    <span>15 recipes</span>
+                </a>
+            </div>
+            <div class="card">
+                <a href="soup">
+                    <img src="{{ url_for('static', filename='images/soup.jpg') }}"  alt="Soup">
+                    <p>Soup</p>
+                    <span>20 recipes</span>
+                </a>
+            </div>
+            <div class="card">
+                <a href="bread">
+                    <img src="{{ url_for('static', filename='images/bread.jpg') }}"  alt="Bread">
+                    <p>Bread</p>
+                    <span>40 recipes</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <button class="nav-btn" onclick="window.location.href='main_dashboard'"><i class="fas fa-home"></i> Home</button>
+        <button class="nav-btn active"><i class="fas fa-book-open"></i> Recipes</button>
+</body>
+</html>

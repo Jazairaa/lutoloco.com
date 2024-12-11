@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #EEEDEB; /* Soft background color */
+        }
+
+        .login-container {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            background-color: #3C3633; /* Muted dark tone */
+        }
+
+        .login-image {
+            width: 50%;
+            background-image: url('{{ url_for("static", filename="upload/chicken.jpg") }}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .login-form {
+            width: 50%;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center; /* Center the form content horizontally */
+            color: #EEEDEB; /* Light text color */
+            height: 100%;
+        }
+
+        .form-header h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #E0CCBE; /* Balanced light brown */
+        }
+
+        form {
+            width: 100%;
+            max-width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center the form inputs and button */
+        }
+
+        .form-group {
+            width: 100%;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            color: #EEEDEB; /* Light text */
+            margin-bottom: 5px;
+            text-align: left; /* Align the label text to the left */
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            background-color: #D1B29D; /* Soft beige */
+            color: #3C3633; /* Dark text */
+            font-size: 1em;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            background-color: #C8A77A; /* Slightly darker beige */
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            background-color: #3C3633; /* Muted dark button */
+            color: #EEEDEB; /* Light button text */
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .form-group button:hover {
+            background-color: #E0CCBE; /* Hover effect with lighter tone */
+        }
+
+        .toggle-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .toggle-link a {
+            color: #E0CCBE; /* Link color */
+            text-decoration: underline;
+        }
+
+        .toggle-link a:hover {
+            color: #DDD4C5; /* Light hover effect */
+        }
+
+        .form-group.error input {
+            border: 2px solid #ff4444;
+            background-color: #ffe6e6;
+        }
+
+        .field-error {
+            color: #ff4444;
+            font-size: 0.8em;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .form-group.error .field-error {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-image"></div>
+        <div class="login-form">
+            <div class="form-header">
+                <h2>Register</h2>
+            </div>
+            <form action="{{ url_for('register') }}" method="POST" novalidate>
+                <div class="form-group {% if 'username' in errors %}error{% endif %}">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" 
+                           value="{{ request.form.username }}"
+                           placeholder="Enter your username">
+                    <span class="field-error">{{ errors.username if 'username' in errors }}</span>
+                </div>
+
+                <div class="form-group {% if 'password' in errors %}error{% endif %}">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" 
+                           placeholder="Create a password">
+                    <span class="field-error">{{ errors.password if 'password' in errors }}</span>
+                </div>
+
+                <div class="form-group {% if 'confirm_password' in errors %}error{% endif %}">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" 
+                           placeholder="Confirm your password">
+                    <span class="field-error">{{ errors.confirm_password if 'confirm_password' in errors }}</span>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit">Register</button>
+                </div>
+            </form>
+            <div class="toggle-link">
+                <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

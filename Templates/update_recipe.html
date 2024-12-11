@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"> <!-- 1. Set character encoding to UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 2. Set viewport for responsiveness -->
+    <title>Update Recipe</title> <!-- 3. Set title of the page -->
+    <style>
+        /* General Reset */
+        body, h1, form, label, input, select, textarea, button { /* 4. Reset margins and padding */
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body { /* 5. Set body styling */
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Container */
+        .container { /* 6. Set container styling */
+            max-width: 600px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Title */
+        .title { /* 7. Set title styling */
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #6e7271;
+            text-transform: uppercase;
+        }
+
+        /* Form Styles */
+        .form { /* 8. Set form layout */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group { /* 9. Set styling for form groups */
+            margin-bottom: 15px;
+        }
+
+        label { /* 10. Set label styling */
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea { /* 11. Set input, select, and textarea styles */
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        textarea { /* 12. Set textarea styling */
+            height: 80px;
+            resize: none;
+        }
+
+        input[type="file"] { /* 13. Set file input styling */
+            border: none;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .recipe-image { /* 14. Set image styling */
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 10px 0;
+            border-radius: 10px;
+        }
+
+        /* Button */
+        .btn { /* 15. Set button styling */
+            background-color: #6e7271;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover { /* 16. Set button hover effect */
+            background-color: #384d48;
+        }
+    </style>
+</head>
+<body>
+    <div class="container"> <!-- 17. Start container -->
+        <h1 class="title">Update Recipe</h1> <!-- 18. Title for the page -->
+        <form action="{{ url_for('update_recipe', recipe_id=recipe[0]) }}" method="POST" enctype="multipart/form-data" class="form"> <!-- 19. Start form -->
+            <div class="form-group"> <!-- 20. Start form group -->
+                <label for="recipe-name">Recipe Name</label> <!-- 21. Label for recipe name -->
+                <input type="text" id="recipe-name" name="name" value="{{ recipe[1] }}" required> <!-- 22. Input for recipe name -->
+            </div> <!-- 23. End form group -->
+
+            <div class="form-group"> <!-- 24. Start form group -->
+                <label for="recipe-category">Category</label> <!-- 25. Label for category -->
+                <select id="recipe-category" name="category" required> <!-- 26. Dropdown for category -->
+                    <option value="Beef" {% if recipe[2] == "Beef" %}selected{% endif %}>Beef</option> <!-- 27. Beef option -->
+                    <option value="Egg" {% if recipe[2] == "Egg" %}selected{% endif %}>Egg</option> <!-- 28. Egg option -->
+                    <option value="Pork" {% if recipe[2] == "Pork" %}selected{% endif %}>Pork</option> <!-- 29. Pork option -->
+                    <option value="Seafood" {% if recipe[2] == "Seafood" %}selected{% endif %}>Seafood</option> <!-- 30. Seafood option -->
+                    <option value="Bread" {% if recipe[2] == "Bread" %}selected{% endif %}>Bread</option> <!-- 31. Bread option -->
+                    <option value="Soup" {% if recipe[2] == "Soup" %}selected{% endif %}>Soup</option> <!-- 32. Soup option -->
+                </select> <!-- 33. End dropdown -->
+            </div> <!-- 34. End form group -->
+
+            <div class="form-group"> <!-- 35. Start form group -->
+                <label for="recipe-ingredient">Ingredient</label> <!-- 36. Label for ingredients -->
+                <textarea id="recipe-ingredient" name="ingredient" required>{{ recipe[3] }}</textarea> <!-- 37. Textarea for ingredients -->
+            </div> <!-- 38. End form group -->
+
+            <div class="form-group"> <!-- 39. Start form group -->
+                <label for="recipe-instructions">Instructions</label> <!-- 40. Label for instructions -->
+                <textarea id="recipe-instructions" name="instructions" required>{{ recipe[4] }}</textarea> <!-- 41. Textarea for instructions -->
+            </div> <!-- 42. End form group -->
+
+            <div class="form-group"> <!-- 43. Start form group -->
+                <label for="recipe-image">Recipe Image</label> <!-- 44. Label for recipe image -->
+                {% if recipe[5] %} <!-- 45. Check if an image exists -->
+                    <img src="{{ url_for('static', filename='images/' + recipe[5]) }}" alt="Recipe Image" class="recipe-image"> <!-- 46. Display the image -->
+                {% endif %} <!-- 47. End image check -->
+                <input type="file" id="recipe-image" name="image"> <!-- 48. File input for recipe image -->
+            </div> <!-- 49. End form group -->
+
+            <div class="form-group"> <!-- 50. Start form group -->
+                <label for="recipe-time">Cooking Time (in minutes)</label> <!-- 51. Label for cooking time -->
+                <input type="number" id="recipe-time" name="time" value="{{ recipe[6] }}" required> <!-- 52. Input for cooking time -->
+            </div> <!-- 53. End form group -->
+
+            <button type="submit" class="btn">Update Recipe</button> <!-- 54. Submit button -->
+        </form> <!-- 55. End form -->
+    </div> <!-- 56. End container -->
+</body>
+</html>

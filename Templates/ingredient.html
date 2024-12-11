@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ recipe.name }} Recipe</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #EEEDEB 0%, #F5F4F2 100%);
+            color: #3C3633;
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(45deg, #3C3633, #4A4441);
+            padding: 15px 25px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: #EEEDEB;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 8px 15px;
+            border-radius: 25px;
+        }
+
+        .back-btn:hover {
+            background: rgba(224, 204, 190, 0.2);
+            transform: translateX(-5px);
+        }
+
+        /* Recipe Container with Split Layout */
+        .recipe-container {
+            margin-top: 80px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            display: flex;
+            gap: 30px;
+        }
+
+        /* Left Side - Image Section */
+        .recipe-image-section {
+            flex: 1;
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .image-frame {
+    width: 500px;
+    height: 500px;
+    border: 2px solid #ccc; /* Optional: Add a border around the frame */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* Ensures the image doesn't overflow the frame */
+    background-color: #f8f8f8; /* Optional: Background color for the frame */
+}
+
+.recipe-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover; /* Ensures the image fits well within the frame */
+}
+
+
+        .recipe-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Right Side - Content Section */
+        .recipe-content {
+            flex: 1.5;
+        }
+
+        .recipe-title {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 25px;
+            background: linear-gradient(45deg, #3C3633, #4A4441);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Enhanced Sections */
+        .ingredients-section, .instructions-section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(224, 204, 190, 0.3);
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #3C3633;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #E0CCBE;
+        }
+
+        .ingredients-list {
+            list-style: none;
+        }
+
+        .ingredient-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: rgba(224, 204, 190, 0.2);
+            border-radius: 15px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .ingredient-item:hover {
+            transform: translateX(10px);
+            background: rgba(224, 204, 190, 0.4);
+        }
+
+        .ingredient-item::before {
+            content: '•';
+            color: #3C3633;
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+
+        .instructions-list {
+            list-style: none;
+            counter-reset: step;
+        }
+
+        .instruction-item {
+            position: relative;
+            padding: 20px 20px 20px 50px;
+            margin-bottom: 15px;
+            background: rgba(224, 204, 190, 0.2);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .instruction-item:hover {
+            transform: translateX(10px);
+            background: rgba(224, 204, 190, 0.4);
+        }
+
+        .instruction-item::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            background: #3C3633;
+            color: #EEEDEB;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .recipe-container {
+                flex-direction: column;
+            }
+
+            .recipe-image-section {
+                position: relative;
+                top: 0;
+            }
+
+            .recipe-image {
+                height: 300px;
+            }
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            background: linear-gradient(45deg, #3C3633, #4A4441);
+            padding: 15px 0;
+            position: fixed;
+            bottom: 0;
+            border-top: 2px solid #747264;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-btn {
+            text-decoration: none;
+            color: #EEEDEB;
+            padding: 8px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-size: 1.1em;
+        }
+
+        .nav-btn.active {
+            background: rgba(224, 204, 190, 0.2);
+            font-weight: 700;
+            color: #E0CCBE;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            background: rgba(224, 204, 190, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <button class="back-btn" onclick="window.history.back()">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+    </div>
+    <div class="recipe-container">
+        <!-- Left Side - Image -->
+        <div class="recipe-image-section">
+            <div class="image-frame">
+                <img src="{{ url_for('static', filename=recipe['image_url']) }}"
+                     class="recipe-image"
+                     alt="{{ recipe['name'] }}">
+            </div>
+        </div>
+    </div>
+    
+      
+        <!-- Right Side - Content -->
+        <div class="recipe-content">
+            <h1 class="recipe-title">{{ recipe.name }}</h1>
+
+            <div class="ingredients-section">
+                <h2 class="section-title">Ingredients</h2>
+                <ul class="ingredients-list">
+                    {% for ingredient in recipe.ingredient %}
+                    <li class="ingredient-item">{{ ingredient }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="instructions-section">
+                <h2 class="section-title">Instructions</h2>
+                <ol class="instructions-list">
+                    {% for instruction in recipe.instructions %}
+                    <li class="instruction-item">{{ instruction }}</li>
+                    {% endfor %}
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="{{ url_for('main_dashboard') }}" class="nav-btn">
+            <i class="fas fa-home"></i> Home
+        </a>
+        <a href="{{ url_for('recipe') }}" class="nav-btn active">
+            <i class="fas fa-book-open"></i> Recipes
+        </a>
+
+    </div>
+</body>
+</html>

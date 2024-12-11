@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <nav>
+        {% if session.get('username') %}
+            <div class="nav-links">
+                {% if session.get('role') == 'admin' %}
+                    <a href="{{ url_for('admin_manage_recipe') }}">Manage Recipes</a>
+                {% else %}
+                    <a href="{{ url_for('main_dashboard') }}">Dashboard</a>
+                {% endif %}
+                <a href="{{ url_for('login') }}">Logout</a>
+            </div>
+        {% endif %}
+    </nav>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="flash-message">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</body>
+</html> 

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* General Styles */
+        body {
+            background-color: #EEEDEB;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #3C3633;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: start;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            margin: auto;
+            background-color: #E0CCBE;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            flex-grow: 1;
+        }
+
+        /* Header Section */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #3C3633;
+            padding: 15px 25px;
+            border-radius: 15px 15px 0 0;
+            color: #EEEDEB;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.8em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #E0CCBE, #EEEDEB);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-links a {
+            color: #EEEDEB;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .logout-btn {
+            background-color: #747264;
+            color: #EEEDEB;
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background-color: #3C3633;
+        }
+
+        /* Recipes in Mind Header */
+        .recipes-in-mind h2 {
+            font-size: 2.2em;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #3C3633;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Hero Section with GIFs */
+        .hero {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin: 30px 0;
+        }
+
+        .hero img {
+            width: 45%;
+            max-width: 500px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hero img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Recipe Cards Section */
+        .recipes {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .recipe-card {
+            background-color: #EEEDEB;
+            border: 1px solid #E0CCBE;
+            border-radius: 15px;
+            padding: 15px;
+            width: 45%;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .recipe-card img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .category {
+            font-size: 1em;
+            font-weight: bold;
+            color: #3C3633;
+            margin-bottom: 10px;
+        }
+
+        .rating, .time {
+            color: #747264;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header with Navigation -->
+        <div class="header">
+            <div class="nav-links">
+                <a href="#"><i class="fas fa-home"></i> Home</a>
+                <a href="{{ url_for('recipe') }}"><i class="fas fa-book-open"></i> Recipes</a>
+            </div>
+            <h1>Welcome, <span id="username-display">{{ username }}</span>!</h1>
+            <form action="{{ url_for('logout') }}" method="POST">
+                <button type="submit" class="logout-btn">Logout</button>
+            </form>
+        </div>
+
+        <!-- Popular Recipes Header -->
+        <div class="recipes-in-mind">
+            <h2>Recipes in Mind</h2>
+        </div>
+
+        <!-- Hero Section with GIFs -->
+        <div class="hero">
+            <img src="{{ url_for('static', filename='Upload/vegie.gif') }}" alt="Vegetable Cooking GIF">
+            <img src="{{ url_for('static', filename='Upload/waffle.gif') }}" alt="Waffle Cooking GIF">
+        </div>
+
+        <!-- Recipes Section -->
+        <div class="recipes">
+            {% for recipe in recipes %}
+            <div class="recipe-card">
+                <div class="category">{{ recipe[0] }}</div>
+                <img src="{{ recipe[2] }}" alt="{{ recipe[1] }}">
+                <h3>{{ recipe[1] }}</h3>
+                <div class="rating">
+                    <span>&#9733;</span> {{ recipe[3] }}
+                </div>
+                <div class="time">
+                    &#9201; {{ recipe[4] }} min
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

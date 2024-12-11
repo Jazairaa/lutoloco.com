@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Recipe Management</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Garetra:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Garetra', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            border: 2px solid #e2e2e2;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #384d48;
+            font-size: 40px;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        /* Recipe List Grid */
+        .recipe-list {
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            text-align: left;
+        }
+
+        /* Recipe Card Styling */
+        .recipe-card {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .recipe-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .recipe-card h3 {
+            color: #384d48;
+            margin-bottom: 15px;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .recipe-card p {
+            color: #6e7271;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .recipe-card ul {
+            color: #6e7271;
+            font-size: 14px;
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .recipe-card .actions {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .recipe-card .actions button {
+            font-size: 14px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            background-color: #6e7271;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .recipe-card .actions button:hover {
+            background-color: #384d48;
+        }
+
+        /* Logout Button */
+        .logout-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #6e7271;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .logout-button:hover {
+            background-color: #384d48;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            width: 50%;
+            height: 5%;
+            padding: 12px;
+            margin: 20px auto;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            box-sizing: border-box;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .form-group button {
+            background-color: #6e7271;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+
+        .form-group button:hover {
+            background-color: #384d48;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+
+            .recipe-card {
+                padding: 15px;
+            }
+
+            .recipe-list {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .recipe-card {
+                padding: 10px;
+            }
+
+            .container {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Logout Button -->
+    <form action="{{ url_for('logout') }}" method="POST">
+        <button class="logout-button" type="submit">Logout</button>
+    </form>lass="container">
+        <h1>Admin Recipe Management</h1>
+
+        <!-- Add/Update Recipe Form -->
+        <form action="{{ url_for('admin_manage_recipe') }}" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="recipe-name">Recipe Name</label>
+                <input type="text" id="recipe-name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="recipe-category">Category</label>
+                <select id="recipe-category" name="category" required>
+                    <option value="Beef">Beef</option>
+                    <option value="Egg">Egg</option>
+                    <option value="Pork">Pork</option>
+                    <option value="Chicken">Chicken</option>
+                    <option value="Bread">Bread</option>
+                    <option value="Soup">Soup</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="recipe-ingredient">Ingredients</label>
+                <textarea id="recipe-ingredient" name="ingredient" rows="4" required placeholder="• Ingredient 1\n• Ingredient 2\n• Ingredient 3"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="recipe-instructions">Instructions</label>
+                <textarea id="recipe-instructions" name="instructions" rows="4" required placeholder="• Step 1\n• Step 2\n• Step 3"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="recipe-time">Time to Cook (in minutes)</label>
+                <input type="number" id="recipe-time" name="time" required>
+            </div>
+
+            <div class="form-group">
+                <label for="recipe-image">Recipe Image (optional)</label>
+                <input type="file" id="recipe-image" name="image">
+            </div>
+
+            <div class="form-group">
+                <button type="submit">Save Recipe</button>
+            </div>
+        </form>
+
+        <!-- Recipe List -->
+        <div class="recipe-list">
+            <h2>Existing Recipes</h2>
+            <input type="text" class="search-bar" placeholder="Search recipes..." id="recipe-search" onkeyup="filterRecipes()">
+            {% for recipe in recipes %}
+                <div class="recipe-card">
+                    {% if recipe[5] %}
+                        <img src="{{ url_for('static', filename='images/' + recipe[5]) }}" alt="Recipe Image">
+                    {% endif %}
+                    <div>
+                        <h3>{{ recipe[1] }}</h3>
+                        <p><strong>Category:</strong> {{ recipe[2] }}</p>
+                        <p><strong>Ingredients:</strong></p>
+                        <ul>
+                            {% for ingredient in recipe[3].split('\n') %}
+                                <li>{{ ingredient }}</li>
+                            {% endfor %}
+                        </ul>
+                        <p><strong>Instructions:</strong></p>
+                        <ul>
+                            {% for instruction in recipe[4].split('\n') %}
+                                <li>{{ instruction }}</li>
+                            {% endfor %}
+                        </ul>
+                        <p><strong>Time to Cook:</strong> {{ recipe[6] }} minutes</p>
+                    </div>
+                    <div class="actions">
+                        <form method="POST" action="{{ url_for('admin_manage_recipe') }}">
+                            <input type="hidden" name="recipe_id" value="{{ recipe[0] }}">
+                            <button type="submit" name="action" value="edit"><i class="fas fa-edit"></i> Edit</button>
+                        </form>
+                        <form method="POST" action="{{ url_for('admin_manage_recipe') }}">
+                            <input type="hidden" name="recipe_id" value="{{ recipe[0] }}">
+                            <button type="submit" name="action" value="delete" onclick="return confirm('Are you sure you want to delete this recipe?');">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

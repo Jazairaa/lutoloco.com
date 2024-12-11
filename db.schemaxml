@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemadesigner version="6.5">
+<source>
+<database charset="latin1" collation="latin1_swedish_ci">lutoloco</database>
+</source>
+<canvas zoom="100">
+<tables>
+<table name="user" view="colnames">
+<left>134</left>
+<top>156</top>
+<width>103</width>
+<height>129</height>
+<sql_create_table>CREATE TABLE `user` (
+  `id` int(50) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci</sql_create_table>
+</table>
+</tables>
+</canvas>
+</schemadesigner>
